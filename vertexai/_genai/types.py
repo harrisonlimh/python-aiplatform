@@ -21,28 +21,10 @@ import json
 import logging
 import re
 import typing
-from typing import (
-    Any,
-    Callable,
-    ClassVar,
-    Dict,
-    List,
-    Literal,
-    Optional,
-    Tuple,
-    TypeVar,
-    Union,
-)
+from typing import Any, Callable, ClassVar, Dict, List, Literal, Optional, Tuple, TypeVar, Union
 from google.genai import _common
 from google.genai import types as genai_types
-from pydantic import (
-    ConfigDict,
-    Field,
-    PrivateAttr,
-    computed_field,
-    field_validator,
-    model_validator,
-)
+from pydantic import ConfigDict, Field, PrivateAttr, computed_field, field_validator, model_validator
 from typing_extensions import TypedDict
 
 logger = logging.getLogger("vertexai_genai.types")
@@ -91,6 +73,46 @@ class PairwiseChoice(_common.CaseInSensitiveEnum):
     """Candidate prediction wins"""
     TIE = "TIE"
     """Winner cannot be determined"""
+
+
+class Outcome(_common.CaseInSensitiveEnum):
+    """Required. Outcome of the code execution."""
+
+    OUTCOME_UNSPECIFIED = "OUTCOME_UNSPECIFIED"
+    """Unspecified status. This value should not be used."""
+    OUTCOME_OK = "OUTCOME_OK"
+    """Code execution completed successfully."""
+    OUTCOME_FAILED = "OUTCOME_FAILED"
+    """Code execution finished but with a failure. `stderr` should contain the reason."""
+    OUTCOME_DEADLINE_EXCEEDED = "OUTCOME_DEADLINE_EXCEEDED"
+    """Code execution ran for too long, and was cancelled. There may or may not be a partial output present."""
+
+
+class Language(_common.CaseInSensitiveEnum):
+    """Required. Programming language of the `code`."""
+
+    LANGUAGE_UNSPECIFIED = "LANGUAGE_UNSPECIFIED"
+    """Unspecified language. This value should not be used."""
+    PYTHON = "PYTHON"
+    """Python >= 3.10, with numpy and simpy available."""
+
+
+class GenerateMemoriesResponseGeneratedMemoryAction(
+    _common.CaseInSensitiveEnum
+):
+    """The action to take."""
+
+    ACTION_UNSPECIFIED = "ACTION_UNSPECIFIED"
+    """The action is unspecified."""
+    CREATED = "CREATED"
+    """The memory was created."""
+    UPDATED = "UPDATED"
+    """The memory was updated.
+
+      The `fact` field may not be updated if the existing fact is still accurate.
+      """
+    DELETED = "DELETED"
+    """The memory was deleted."""
 
 
 class BleuInstance(_common.BaseModel):
@@ -399,7 +421,9 @@ class PointwiseMetricInputDict(TypedDict, total=False):
     """Required. Spec for pointwise metric."""
 
 
-PointwiseMetricInputOrDict = Union[PointwiseMetricInput, PointwiseMetricInputDict]
+PointwiseMetricInputOrDict = Union[
+    PointwiseMetricInput, PointwiseMetricInputDict
+]
 
 
 class PairwiseMetricInstance(_common.BaseModel):
@@ -418,7 +442,9 @@ class PairwiseMetricInstanceDict(TypedDict, total=False):
     """Instance specified as a json string. String key-value pairs are expected in the json_instance to render PairwiseMetricSpec.instance_prompt_template."""
 
 
-PairwiseMetricInstanceOrDict = Union[PairwiseMetricInstance, PairwiseMetricInstanceDict]
+PairwiseMetricInstanceOrDict = Union[
+    PairwiseMetricInstance, PairwiseMetricInstanceDict
+]
 
 
 class PairwiseMetricSpec(_common.BaseModel):
@@ -514,7 +540,9 @@ class ToolCallValidInstanceDict(TypedDict, total=False):
     """Required. Ground truth used to compare against the prediction."""
 
 
-ToolCallValidInstanceOrDict = Union[ToolCallValidInstance, ToolCallValidInstanceDict]
+ToolCallValidInstanceOrDict = Union[
+    ToolCallValidInstance, ToolCallValidInstanceDict
+]
 
 
 class ToolCallValidSpec(_common.BaseModel):
@@ -580,7 +608,9 @@ class ToolNameMatchInstanceDict(TypedDict, total=False):
     """Required. Ground truth used to compare against the prediction."""
 
 
-ToolNameMatchInstanceOrDict = Union[ToolNameMatchInstance, ToolNameMatchInstanceDict]
+ToolNameMatchInstanceOrDict = Union[
+    ToolNameMatchInstance, ToolNameMatchInstanceDict
+]
 
 
 class ToolNameMatchSpec(_common.BaseModel):
@@ -965,8 +995,8 @@ class _EvaluateInstancesRequestParameters(_common.BaseModel):
     tool_name_match_input: Optional[ToolNameMatchInput] = Field(
         default=None, description=""""""
     )
-    tool_parameter_key_match_input: Optional[ToolParameterKeyMatchInput] = Field(
-        default=None, description=""""""
+    tool_parameter_key_match_input: Optional[ToolParameterKeyMatchInput] = (
+        Field(default=None, description="""""")
     )
     tool_parameter_kv_match_input: Optional[ToolParameterKVMatchInput] = Field(
         default=None, description=""""""
@@ -974,7 +1004,9 @@ class _EvaluateInstancesRequestParameters(_common.BaseModel):
     autorater_config: Optional[AutoraterConfig] = Field(
         default=None, description=""""""
     )
-    config: Optional[EvaluateInstancesConfig] = Field(default=None, description="""""")
+    config: Optional[EvaluateInstancesConfig] = Field(
+        default=None, description=""""""
+    )
 
 
 class _EvaluateInstancesRequestParametersDict(TypedDict, total=False):
@@ -1089,7 +1121,9 @@ class ExactMatchMetricValueDict(TypedDict, total=False):
     """Output only. Exact match score."""
 
 
-ExactMatchMetricValueOrDict = Union[ExactMatchMetricValue, ExactMatchMetricValueDict]
+ExactMatchMetricValueOrDict = Union[
+    ExactMatchMetricValue, ExactMatchMetricValueDict
+]
 
 
 class ExactMatchResults(_common.BaseModel):
@@ -1193,7 +1227,9 @@ class PairwiseMetricResultDict(TypedDict, total=False):
     """Output only. Pairwise metric choice."""
 
 
-PairwiseMetricResultOrDict = Union[PairwiseMetricResult, PairwiseMetricResultDict]
+PairwiseMetricResultOrDict = Union[
+    PairwiseMetricResult, PairwiseMetricResultDict
+]
 
 
 class PointwiseMetricResult(_common.BaseModel):
@@ -1224,7 +1260,9 @@ class PointwiseMetricResultDict(TypedDict, total=False):
     """Output only. Pointwise metric score."""
 
 
-PointwiseMetricResultOrDict = Union[PointwiseMetricResult, PointwiseMetricResultDict]
+PointwiseMetricResultOrDict = Union[
+    PointwiseMetricResult, PointwiseMetricResultDict
+]
 
 
 class RougeMetricValue(_common.BaseModel):
@@ -1285,7 +1323,9 @@ class RubricCritiqueResultDict(TypedDict, total=False):
     """Output only. Verdict for the rubric - true if the rubric is met, false otherwise."""
 
 
-RubricCritiqueResultOrDict = Union[RubricCritiqueResult, RubricCritiqueResultDict]
+RubricCritiqueResultOrDict = Union[
+    RubricCritiqueResult, RubricCritiqueResultDict
+]
 
 
 class RubricBasedInstructionFollowingResult(_common.BaseModel):
@@ -1375,9 +1415,11 @@ ToolCallValidMetricValueOrDict = Union[
 class ToolCallValidResults(_common.BaseModel):
     """Results for tool call valid metric."""
 
-    tool_call_valid_metric_values: Optional[list[ToolCallValidMetricValue]] = Field(
-        default=None,
-        description="""Output only. Tool call valid metric values.""",
+    tool_call_valid_metric_values: Optional[list[ToolCallValidMetricValue]] = (
+        Field(
+            default=None,
+            description="""Output only. Tool call valid metric values.""",
+        )
     )
 
 
@@ -1388,7 +1430,9 @@ class ToolCallValidResultsDict(TypedDict, total=False):
     """Output only. Tool call valid metric values."""
 
 
-ToolCallValidResultsOrDict = Union[ToolCallValidResults, ToolCallValidResultsDict]
+ToolCallValidResultsOrDict = Union[
+    ToolCallValidResults, ToolCallValidResultsDict
+]
 
 
 class ToolNameMatchMetricValue(_common.BaseModel):
@@ -1414,9 +1458,11 @@ ToolNameMatchMetricValueOrDict = Union[
 class ToolNameMatchResults(_common.BaseModel):
     """Results for tool name match metric."""
 
-    tool_name_match_metric_values: Optional[list[ToolNameMatchMetricValue]] = Field(
-        default=None,
-        description="""Output only. Tool name match metric values.""",
+    tool_name_match_metric_values: Optional[list[ToolNameMatchMetricValue]] = (
+        Field(
+            default=None,
+            description="""Output only. Tool name match metric values.""",
+        )
     )
 
 
@@ -1427,7 +1473,9 @@ class ToolNameMatchResultsDict(TypedDict, total=False):
     """Output only. Tool name match metric values."""
 
 
-ToolNameMatchResultsOrDict = Union[ToolNameMatchResults, ToolNameMatchResultsDict]
+ToolNameMatchResultsOrDict = Union[
+    ToolNameMatchResults, ToolNameMatchResultsDict
+]
 
 
 class ToolParameterKeyMatchMetricValue(_common.BaseModel):
@@ -1738,7 +1786,9 @@ class TrajectoryRecallResults(_common.BaseModel):
 class TrajectoryRecallResultsDict(TypedDict, total=False):
     """Results for TrajectoryRecall metric."""
 
-    trajectory_recall_metric_values: Optional[list[TrajectoryRecallMetricValueDict]]
+    trajectory_recall_metric_values: Optional[
+        list[TrajectoryRecallMetricValueDict]
+    ]
     """Output only. TrajectoryRecall metric values."""
 
 
@@ -1826,9 +1876,11 @@ class EvaluateInstancesResponse(_common.BaseModel):
         default=None,
         description="""Result for rubric based instruction following metric.""",
     )
-    summarization_verbosity_result: Optional[SummarizationVerbosityResult] = Field(
-        default=None,
-        description="""Result for summarization verbosity metric.""",
+    summarization_verbosity_result: Optional[SummarizationVerbosityResult] = (
+        Field(
+            default=None,
+            description="""Result for summarization verbosity metric.""",
+        )
     )
     tool_call_valid_results: Optional[ToolCallValidResults] = Field(
         default=None,
@@ -1837,13 +1889,17 @@ class EvaluateInstancesResponse(_common.BaseModel):
     tool_name_match_results: Optional[ToolNameMatchResults] = Field(
         default=None, description="""Results for tool name match metric."""
     )
-    tool_parameter_key_match_results: Optional[ToolParameterKeyMatchResults] = Field(
-        default=None,
-        description="""Results for tool parameter key match metric.""",
+    tool_parameter_key_match_results: Optional[ToolParameterKeyMatchResults] = (
+        Field(
+            default=None,
+            description="""Results for tool parameter key match metric.""",
+        )
     )
-    tool_parameter_kv_match_results: Optional[ToolParameterKVMatchResults] = Field(
-        default=None,
-        description="""Results for tool parameter key value match metric.""",
+    tool_parameter_kv_match_results: Optional[ToolParameterKVMatchResults] = (
+        Field(
+            default=None,
+            description="""Results for tool parameter key value match metric.""",
+        )
     )
     trajectory_any_order_match_results: Optional[
         TrajectoryAnyOrderMatchResults
@@ -1851,11 +1907,15 @@ class EvaluateInstancesResponse(_common.BaseModel):
         default=None,
         description="""Result for trajectory any order match metric.""",
     )
-    trajectory_exact_match_results: Optional[TrajectoryExactMatchResults] = Field(
-        default=None,
-        description="""Result for trajectory exact match metric.""",
+    trajectory_exact_match_results: Optional[TrajectoryExactMatchResults] = (
+        Field(
+            default=None,
+            description="""Result for trajectory exact match metric.""",
+        )
     )
-    trajectory_in_order_match_results: Optional[TrajectoryInOrderMatchResults] = Field(
+    trajectory_in_order_match_results: Optional[
+        TrajectoryInOrderMatchResults
+    ] = Field(
         default=None,
         description="""Result for trajectory in order match metric.""",
     )
@@ -1917,13 +1977,17 @@ class EvaluateInstancesResponseDict(TypedDict, total=False):
     tool_parameter_kv_match_results: Optional[ToolParameterKVMatchResultsDict]
     """Results for tool parameter key value match metric."""
 
-    trajectory_any_order_match_results: Optional[TrajectoryAnyOrderMatchResultsDict]
+    trajectory_any_order_match_results: Optional[
+        TrajectoryAnyOrderMatchResultsDict
+    ]
     """Result for trajectory any order match metric."""
 
     trajectory_exact_match_results: Optional[TrajectoryExactMatchResultsDict]
     """Result for trajectory exact match metric."""
 
-    trajectory_in_order_match_results: Optional[TrajectoryInOrderMatchResultsDict]
+    trajectory_in_order_match_results: Optional[
+        TrajectoryInOrderMatchResultsDict
+    ]
     """Result for trajectory in order match metric."""
 
     trajectory_precision_results: Optional[TrajectoryPrecisionResultsDict]
@@ -1932,7 +1996,9 @@ class EvaluateInstancesResponseDict(TypedDict, total=False):
     trajectory_recall_results: Optional[TrajectoryRecallResultsDict]
     """Results for trajectory recall metric."""
 
-    trajectory_single_tool_use_results: Optional[TrajectorySingleToolUseResultsDict]
+    trajectory_single_tool_use_results: Optional[
+        TrajectorySingleToolUseResultsDict
+    ]
     """Results for trajectory single tool use metric."""
 
 
@@ -2180,7 +2246,9 @@ EvaluationDatasetOrDict = Union[EvaluationDataset, EvaluationDatasetDict]
 class Metric(_common.BaseModel):
     """The metric used for evaluation."""
 
-    name: Optional[str] = Field(default=None, description="""The name of the metric.""")
+    name: Optional[str] = Field(
+        default=None, description="""The name of the metric."""
+    )
     custom_function: Optional[Callable] = Field(
         default=None,
         description="""The custom function that defines the end-to-end logic for metric computation.""",
@@ -2231,7 +2299,9 @@ class Metric(_common.BaseModel):
         model.name = model.name.lower()
         return model
 
-    def to_yaml_file(self, file_path: str, version: Optional[str] = None) -> None:
+    def to_yaml_file(
+        self, file_path: str, version: Optional[str] = None
+    ) -> None:
         """Dumps the metric object to a YAML file.
 
         Args:
@@ -2287,7 +2357,9 @@ class LLMMetric(Metric):
 
     @field_validator("prompt_template", mode="before")
     @classmethod
-    def validate_prompt_template(cls, value: Union[str, "MetricPromptBuilder"]) -> str:
+    def validate_prompt_template(
+        cls, value: Union[str, "MetricPromptBuilder"]
+    ) -> str:
         """Validates prompt template to be a non-empty string."""
         if value is None:
             raise ValueError("Prompt template cannot be empty.")
@@ -2299,10 +2371,14 @@ class LLMMetric(Metric):
 
     @field_validator("judge_model_sampling_count")
     @classmethod
-    def validate_judge_model_sampling_count(cls, value: Optional[int]) -> Optional[int]:
+    def validate_judge_model_sampling_count(
+        cls, value: Optional[int]
+    ) -> Optional[int]:
         """Validates judge_model_sampling_count to be between 1 and 32."""
         if value is not None and (value < 1 or value > 32):
-            raise ValueError("judge_model_sampling_count must be between 1 and 32.")
+            raise ValueError(
+                "judge_model_sampling_count must be between 1 and 32."
+            )
         return value
 
 
@@ -2393,19 +2469,27 @@ class EvaluateDatasetConfigDict(TypedDict, total=False):
     """Used to override HTTP request options."""
 
 
-EvaluateDatasetConfigOrDict = Union[EvaluateDatasetConfig, EvaluateDatasetConfigDict]
+EvaluateDatasetConfigOrDict = Union[
+    EvaluateDatasetConfig, EvaluateDatasetConfigDict
+]
 
 
 class _EvaluateDatasetRequestParameters(_common.BaseModel):
     """Parameters for batch dataset evaluation."""
 
-    dataset: Optional[EvaluationDataset] = Field(default=None, description="""""")
+    dataset: Optional[EvaluationDataset] = Field(
+        default=None, description=""""""
+    )
     metrics: Optional[list[Metric]] = Field(default=None, description="""""")
-    output_config: Optional[OutputConfig] = Field(default=None, description="""""")
+    output_config: Optional[OutputConfig] = Field(
+        default=None, description=""""""
+    )
     autorater_config: Optional[AutoraterConfig] = Field(
         default=None, description=""""""
     )
-    config: Optional[EvaluateDatasetConfig] = Field(default=None, description="""""")
+    config: Optional[EvaluateDatasetConfig] = Field(
+        default=None, description=""""""
+    )
 
 
 class _EvaluateDatasetRequestParametersDict(TypedDict, total=False):
@@ -2450,7 +2534,9 @@ class EvaluateDatasetOperation(_common.BaseModel):
         default=None,
         description="""The error result of the operation in case of failure or cancellation.""",
     )
-    response: Optional[EvaluationDataset] = Field(default=None, description="""""")
+    response: Optional[EvaluationDataset] = Field(
+        default=None, description=""""""
+    )
 
 
 class EvaluateDatasetOperationDict(TypedDict, total=False):
@@ -2766,7 +2852,9 @@ CreateAgentEngineConfigOrDict = Union[
 class _CreateAgentEngineRequestParameters(_common.BaseModel):
     """Parameters for creating agent engines."""
 
-    config: Optional[CreateAgentEngineConfig] = Field(default=None, description="""""")
+    config: Optional[CreateAgentEngineConfig] = Field(
+        default=None, description=""""""
+    )
 
 
 class _CreateAgentEngineRequestParametersDict(TypedDict, total=False):
@@ -2781,9 +2869,125 @@ _CreateAgentEngineRequestParametersOrDict = Union[
 ]
 
 
+class ReasoningEngineContextSpecMemoryBankConfigGenerationConfig(
+    _common.BaseModel
+):
+    """Configuration for how to generate memories."""
+
+    model: Optional[str] = Field(
+        default=None,
+        description="""Required. The model used to generate memories. Format: `projects/{project}/locations/{location}/publishers/google/models/{model}` or `projects/{project}/locations/{location}/endpoints/{endpoint}`.""",
+    )
+
+
+class ReasoningEngineContextSpecMemoryBankConfigGenerationConfigDict(
+    TypedDict, total=False
+):
+    """Configuration for how to generate memories."""
+
+    model: Optional[str]
+    """Required. The model used to generate memories. Format: `projects/{project}/locations/{location}/publishers/google/models/{model}` or `projects/{project}/locations/{location}/endpoints/{endpoint}`."""
+
+
+ReasoningEngineContextSpecMemoryBankConfigGenerationConfigOrDict = Union[
+    ReasoningEngineContextSpecMemoryBankConfigGenerationConfig,
+    ReasoningEngineContextSpecMemoryBankConfigGenerationConfigDict,
+]
+
+
+class ReasoningEngineContextSpecMemoryBankConfigSimilaritySearchConfig(
+    _common.BaseModel
+):
+    """Configuration for how to perform similarity search on memories."""
+
+    embedding_model: Optional[str] = Field(
+        default=None,
+        description="""Required. The model used to generate embeddings to lookup similar memories. Format: `projects/{project}/locations/{location}/publishers/google/models/{model}` or `projects/{project}/locations/{location}/endpoints/{endpoint}`.""",
+    )
+
+
+class ReasoningEngineContextSpecMemoryBankConfigSimilaritySearchConfigDict(
+    TypedDict, total=False
+):
+    """Configuration for how to perform similarity search on memories."""
+
+    embedding_model: Optional[str]
+    """Required. The model used to generate embeddings to lookup similar memories. Format: `projects/{project}/locations/{location}/publishers/google/models/{model}` or `projects/{project}/locations/{location}/endpoints/{endpoint}`."""
+
+
+ReasoningEngineContextSpecMemoryBankConfigSimilaritySearchConfigOrDict = Union[
+    ReasoningEngineContextSpecMemoryBankConfigSimilaritySearchConfig,
+    ReasoningEngineContextSpecMemoryBankConfigSimilaritySearchConfigDict,
+]
+
+
+class ReasoningEngineContextSpecMemoryBankConfig(_common.BaseModel):
+    """Specification for a Memory Bank."""
+
+    generation_config: Optional[
+        ReasoningEngineContextSpecMemoryBankConfigGenerationConfig
+    ] = Field(
+        default=None,
+        description="""Optional. Configuration for how to generate memories for the Memory Bank.""",
+    )
+    similarity_search_config: Optional[
+        ReasoningEngineContextSpecMemoryBankConfigSimilaritySearchConfig
+    ] = Field(
+        default=None,
+        description="""Optional. Configuration for how to perform similarity search on memories. If not set, the Memory Bank will use the default embedding model `text-embedding-005`.""",
+    )
+
+
+class ReasoningEngineContextSpecMemoryBankConfigDict(TypedDict, total=False):
+    """Specification for a Memory Bank."""
+
+    generation_config: Optional[
+        ReasoningEngineContextSpecMemoryBankConfigGenerationConfigDict
+    ]
+    """Optional. Configuration for how to generate memories for the Memory Bank."""
+
+    similarity_search_config: Optional[
+        ReasoningEngineContextSpecMemoryBankConfigSimilaritySearchConfigDict
+    ]
+    """Optional. Configuration for how to perform similarity search on memories. If not set, the Memory Bank will use the default embedding model `text-embedding-005`."""
+
+
+ReasoningEngineContextSpecMemoryBankConfigOrDict = Union[
+    ReasoningEngineContextSpecMemoryBankConfig,
+    ReasoningEngineContextSpecMemoryBankConfigDict,
+]
+
+
+class ReasoningEngineContextSpec(_common.BaseModel):
+    """Configuration for how Agent Engine sub-resources should manage context."""
+
+    memory_bank_config: Optional[ReasoningEngineContextSpecMemoryBankConfig] = (
+        Field(
+            default=None,
+            description="""Optional. Specification for a Memory Bank, which manages memories for the Agent Engine.""",
+        )
+    )
+
+
+class ReasoningEngineContextSpecDict(TypedDict, total=False):
+    """Configuration for how Agent Engine sub-resources should manage context."""
+
+    memory_bank_config: Optional[ReasoningEngineContextSpecMemoryBankConfigDict]
+    """Optional. Specification for a Memory Bank, which manages memories for the Agent Engine."""
+
+
+ReasoningEngineContextSpecOrDict = Union[
+    ReasoningEngineContextSpec, ReasoningEngineContextSpecDict
+]
+
+
 class ReasoningEngine(_common.BaseModel):
     """An agent engine."""
 
+    context_spec: Optional[ReasoningEngineContextSpec] = Field(
+        default=None,
+        description="""Optional. Configuration for how Agent Engine sub-resources should manage context.""",
+    )
     create_time: Optional[datetime.datetime] = Field(
         default=None,
         description="""Output only. Timestamp when this ReasoningEngine was created.""",
@@ -2816,6 +3020,9 @@ class ReasoningEngine(_common.BaseModel):
 
 class ReasoningEngineDict(TypedDict, total=False):
     """An agent engine."""
+
+    context_spec: Optional[ReasoningEngineContextSpecDict]
+    """Optional. Configuration for how Agent Engine sub-resources should manage context."""
 
     create_time: Optional[datetime.datetime]
     """Output only. Timestamp when this ReasoningEngine was created."""
@@ -2885,7 +3092,200 @@ class AgentEngineOperationDict(TypedDict, total=False):
     """The created Agent Engine."""
 
 
-AgentEngineOperationOrDict = Union[AgentEngineOperation, AgentEngineOperationDict]
+AgentEngineOperationOrDict = Union[
+    AgentEngineOperation, AgentEngineOperationDict
+]
+
+
+class AgentEngineMemoryConfig(_common.BaseModel):
+    """Config for create memory."""
+
+    http_options: Optional[HttpOptions] = Field(
+        default=None, description="""Used to override HTTP request options."""
+    )
+    display_name: Optional[str] = Field(
+        default=None, description="""The display name of the memory."""
+    )
+    description: Optional[str] = Field(
+        default=None, description="""The description of the memory."""
+    )
+
+
+class AgentEngineMemoryConfigDict(TypedDict, total=False):
+    """Config for create memory."""
+
+    http_options: Optional[HttpOptionsDict]
+    """Used to override HTTP request options."""
+
+    display_name: Optional[str]
+    """The display name of the memory."""
+
+    description: Optional[str]
+    """The description of the memory."""
+
+
+AgentEngineMemoryConfigOrDict = Union[
+    AgentEngineMemoryConfig, AgentEngineMemoryConfigDict
+]
+
+
+class _CreateAgentEngineMemoryRequestParameters(_common.BaseModel):
+
+    name: Optional[str] = Field(
+        default=None,
+        description="""Name of the agent engine to create the memory under.""",
+    )
+    fact: Optional[str] = Field(
+        default=None,
+        description="""The fact of the memory.
+
+      This is the semantic knowledge extracted from the source content).""",
+    )
+    scope: Optional[dict[str, str]] = Field(
+        default=None,
+        description="""The scope of the memory.
+
+      Memories are isolated within their scope. The scope is defined when
+      creating or generating memories. Up to 5 key-value pairs are accepted,
+      andscope values cannot contain the wildcard character '*'.""",
+    )
+    config: Optional[AgentEngineMemoryConfig] = Field(
+        default=None, description=""""""
+    )
+
+
+class _CreateAgentEngineMemoryRequestParametersDict(TypedDict, total=False):
+
+    name: Optional[str]
+    """Name of the agent engine to create the memory under."""
+
+    fact: Optional[str]
+    """The fact of the memory.
+
+      This is the semantic knowledge extracted from the source content)."""
+
+    scope: Optional[dict[str, str]]
+    """The scope of the memory.
+
+      Memories are isolated within their scope. The scope is defined when
+      creating or generating memories. Up to 5 key-value pairs are accepted,
+      andscope values cannot contain the wildcard character '*'."""
+
+    config: Optional[AgentEngineMemoryConfigDict]
+    """"""
+
+
+_CreateAgentEngineMemoryRequestParametersOrDict = Union[
+    _CreateAgentEngineMemoryRequestParameters,
+    _CreateAgentEngineMemoryRequestParametersDict,
+]
+
+
+class Memory(_common.BaseModel):
+    """A memory."""
+
+    create_time: Optional[datetime.datetime] = Field(
+        default=None,
+        description="""Output only. Timestamp when this Memory was created.""",
+    )
+    description: Optional[str] = Field(
+        default=None, description="""Optional. Description of the Memory."""
+    )
+    display_name: Optional[str] = Field(
+        default=None, description="""Optional. Display name of the Memory."""
+    )
+    fact: Optional[str] = Field(
+        default=None,
+        description="""Required. Semantic knowledge extracted from the source content.""",
+    )
+    name: Optional[str] = Field(
+        default=None,
+        description="""Identifier. The resource name of the Memory. Format: `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/memories/{memory}`""",
+    )
+    scope: Optional[dict[str, str]] = Field(
+        default=None,
+        description="""Required. Immutable. The scope of the Memory. Memories are isolated within their scope. The scope is defined when creating or generating memories. Scope values cannot contain the wildcard character '*'.""",
+    )
+    update_time: Optional[datetime.datetime] = Field(
+        default=None,
+        description="""Output only. Timestamp when this Memory was most recently updated.""",
+    )
+
+
+class MemoryDict(TypedDict, total=False):
+    """A memory."""
+
+    create_time: Optional[datetime.datetime]
+    """Output only. Timestamp when this Memory was created."""
+
+    description: Optional[str]
+    """Optional. Description of the Memory."""
+
+    display_name: Optional[str]
+    """Optional. Display name of the Memory."""
+
+    fact: Optional[str]
+    """Required. Semantic knowledge extracted from the source content."""
+
+    name: Optional[str]
+    """Identifier. The resource name of the Memory. Format: `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/memories/{memory}`"""
+
+    scope: Optional[dict[str, str]]
+    """Required. Immutable. The scope of the Memory. Memories are isolated within their scope. The scope is defined when creating or generating memories. Scope values cannot contain the wildcard character '*'."""
+
+    update_time: Optional[datetime.datetime]
+    """Output only. Timestamp when this Memory was most recently updated."""
+
+
+MemoryOrDict = Union[Memory, MemoryDict]
+
+
+class AgentEngineMemoryOperation(_common.BaseModel):
+    """Operation that has an agent engine memory as a response."""
+
+    name: Optional[str] = Field(
+        default=None,
+        description="""The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`.""",
+    )
+    metadata: Optional[dict[str, Any]] = Field(
+        default=None,
+        description="""Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata.  Any method that returns a long-running operation should document the metadata type, if any.""",
+    )
+    done: Optional[bool] = Field(
+        default=None,
+        description="""If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available.""",
+    )
+    error: Optional[dict[str, Any]] = Field(
+        default=None,
+        description="""The error result of the operation in case of failure or cancellation.""",
+    )
+    response: Optional[Memory] = Field(
+        default=None, description="""The Agent Engine Memory."""
+    )
+
+
+class AgentEngineMemoryOperationDict(TypedDict, total=False):
+    """Operation that has an agent engine memory as a response."""
+
+    name: Optional[str]
+    """The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`."""
+
+    metadata: Optional[dict[str, Any]]
+    """Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata.  Any method that returns a long-running operation should document the metadata type, if any."""
+
+    done: Optional[bool]
+    """If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available."""
+
+    error: Optional[dict[str, Any]]
+    """The error result of the operation in case of failure or cancellation."""
+
+    response: Optional[MemoryDict]
+    """The Agent Engine Memory."""
+
+
+AgentEngineMemoryOperationOrDict = Union[
+    AgentEngineMemoryOperation, AgentEngineMemoryOperationDict
+]
 
 
 class DeleteAgentEngineConfig(_common.BaseModel):
@@ -2918,7 +3318,9 @@ class _DeleteAgentEngineRequestParameters(_common.BaseModel):
         default=False,
         description="""If set to true, any child resources will also be deleted.""",
     )
-    config: Optional[DeleteAgentEngineConfig] = Field(default=None, description="""""")
+    config: Optional[DeleteAgentEngineConfig] = Field(
+        default=None, description=""""""
+    )
 
 
 class _DeleteAgentEngineRequestParametersDict(TypedDict, total=False):
@@ -2981,6 +3383,750 @@ DeleteAgentEngineOperationOrDict = Union[
 ]
 
 
+class DeleteAgentEngineMemoryConfig(_common.BaseModel):
+    """Config for deleting agent engine."""
+
+    http_options: Optional[HttpOptions] = Field(
+        default=None, description="""Used to override HTTP request options."""
+    )
+
+
+class DeleteAgentEngineMemoryConfigDict(TypedDict, total=False):
+    """Config for deleting agent engine."""
+
+    http_options: Optional[HttpOptionsDict]
+    """Used to override HTTP request options."""
+
+
+DeleteAgentEngineMemoryConfigOrDict = Union[
+    DeleteAgentEngineMemoryConfig, DeleteAgentEngineMemoryConfigDict
+]
+
+
+class _DeleteAgentEngineMemoryRequestParameters(_common.BaseModel):
+    """Parameters for deleting agent engines."""
+
+    name: Optional[str] = Field(
+        default=None,
+        description="""Name of the agent engine memory to delete.""",
+    )
+    config: Optional[DeleteAgentEngineMemoryConfig] = Field(
+        default=None, description=""""""
+    )
+
+
+class _DeleteAgentEngineMemoryRequestParametersDict(TypedDict, total=False):
+    """Parameters for deleting agent engines."""
+
+    name: Optional[str]
+    """Name of the agent engine memory to delete."""
+
+    config: Optional[DeleteAgentEngineMemoryConfigDict]
+    """"""
+
+
+_DeleteAgentEngineMemoryRequestParametersOrDict = Union[
+    _DeleteAgentEngineMemoryRequestParameters,
+    _DeleteAgentEngineMemoryRequestParametersDict,
+]
+
+
+class DeleteAgentEngineMemoryOperation(_common.BaseModel):
+    """Operation for deleting agent engines."""
+
+    name: Optional[str] = Field(
+        default=None,
+        description="""The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`.""",
+    )
+    metadata: Optional[dict[str, Any]] = Field(
+        default=None,
+        description="""Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata.  Any method that returns a long-running operation should document the metadata type, if any.""",
+    )
+    done: Optional[bool] = Field(
+        default=None,
+        description="""If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available.""",
+    )
+    error: Optional[dict[str, Any]] = Field(
+        default=None,
+        description="""The error result of the operation in case of failure or cancellation.""",
+    )
+
+
+class DeleteAgentEngineMemoryOperationDict(TypedDict, total=False):
+    """Operation for deleting agent engines."""
+
+    name: Optional[str]
+    """The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`."""
+
+    metadata: Optional[dict[str, Any]]
+    """Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata.  Any method that returns a long-running operation should document the metadata type, if any."""
+
+    done: Optional[bool]
+    """If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available."""
+
+    error: Optional[dict[str, Any]]
+    """The error result of the operation in case of failure or cancellation."""
+
+
+DeleteAgentEngineMemoryOperationOrDict = Union[
+    DeleteAgentEngineMemoryOperation, DeleteAgentEngineMemoryOperationDict
+]
+
+
+class GenerateMemoriesRequestVertexSessionSource(_common.BaseModel):
+    """The vertex session source for generating memories."""
+
+    end_time: Optional[datetime.datetime] = Field(
+        default=None,
+        description="""Optional. End time (exclusive) of the time range. If not set, the end time is unbounded.""",
+    )
+    session: Optional[str] = Field(
+        default=None,
+        description="""Required. The resource name of the Session to generate memories for. Format: `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`""",
+    )
+    start_time: Optional[datetime.datetime] = Field(
+        default=None,
+        description="""Optional. Time range to define which session events should be used to generate memories. Start time (inclusive) of the time range. If not set, the start time is unbounded.""",
+    )
+
+
+class GenerateMemoriesRequestVertexSessionSourceDict(TypedDict, total=False):
+    """The vertex session source for generating memories."""
+
+    end_time: Optional[datetime.datetime]
+    """Optional. End time (exclusive) of the time range. If not set, the end time is unbounded."""
+
+    session: Optional[str]
+    """Required. The resource name of the Session to generate memories for. Format: `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`"""
+
+    start_time: Optional[datetime.datetime]
+    """Optional. Time range to define which session events should be used to generate memories. Start time (inclusive) of the time range. If not set, the start time is unbounded."""
+
+
+GenerateMemoriesRequestVertexSessionSourceOrDict = Union[
+    GenerateMemoriesRequestVertexSessionSource,
+    GenerateMemoriesRequestVertexSessionSourceDict,
+]
+
+
+class CodeExecutionResult(_common.BaseModel):
+    """Result of executing the [ExecutableCode].
+
+    Only generated when using the [CodeExecution] tool, and always follows a
+    `part` containing the [ExecutableCode].
+    """
+
+    outcome: Optional[Outcome] = Field(
+        default=None, description="""Required. Outcome of the code execution."""
+    )
+    output: Optional[str] = Field(
+        default=None,
+        description="""Optional. Contains stdout when code execution is successful, stderr or other description otherwise.""",
+    )
+
+
+class CodeExecutionResultDict(TypedDict, total=False):
+    """Result of executing the [ExecutableCode].
+
+    Only generated when using the [CodeExecution] tool, and always follows a
+    `part` containing the [ExecutableCode].
+    """
+
+    outcome: Optional[Outcome]
+    """Required. Outcome of the code execution."""
+
+    output: Optional[str]
+    """Optional. Contains stdout when code execution is successful, stderr or other description otherwise."""
+
+
+CodeExecutionResultOrDict = Union[CodeExecutionResult, CodeExecutionResultDict]
+
+
+class ExecutableCode(_common.BaseModel):
+    """Code generated by the model that is meant to be executed, and the result returned to the model.
+
+    Generated when using the [CodeExecution] tool, in which the code will be
+    automatically executed, and a corresponding [CodeExecutionResult] will also
+    be generated.
+    """
+
+    code: Optional[str] = Field(
+        default=None, description="""Required. The code to be executed."""
+    )
+    language: Optional[Language] = Field(
+        default=None,
+        description="""Required. Programming language of the `code`.""",
+    )
+
+
+class ExecutableCodeDict(TypedDict, total=False):
+    """Code generated by the model that is meant to be executed, and the result returned to the model.
+
+    Generated when using the [CodeExecution] tool, in which the code will be
+    automatically executed, and a corresponding [CodeExecutionResult] will also
+    be generated.
+    """
+
+    code: Optional[str]
+    """Required. The code to be executed."""
+
+    language: Optional[Language]
+    """Required. Programming language of the `code`."""
+
+
+ExecutableCodeOrDict = Union[ExecutableCode, ExecutableCodeDict]
+
+
+class FileData(_common.BaseModel):
+    """URI based data."""
+
+    display_name: Optional[str] = Field(
+        default=None,
+        description="""Optional. Display name of the file data. Used to provide a label or filename to distinguish file datas. This field is only returned in PromptMessage for prompt management. It is currently used in the Gemini GenerateContent calls only when server side tools (code_execution, google_search, and url_context) are enabled.""",
+    )
+    file_uri: Optional[str] = Field(
+        default=None, description="""Required. URI."""
+    )
+    mime_type: Optional[str] = Field(
+        default=None,
+        description="""Required. The IANA standard MIME type of the source data.""",
+    )
+
+
+class FileDataDict(TypedDict, total=False):
+    """URI based data."""
+
+    display_name: Optional[str]
+    """Optional. Display name of the file data. Used to provide a label or filename to distinguish file datas. This field is only returned in PromptMessage for prompt management. It is currently used in the Gemini GenerateContent calls only when server side tools (code_execution, google_search, and url_context) are enabled."""
+
+    file_uri: Optional[str]
+    """Required. URI."""
+
+    mime_type: Optional[str]
+    """Required. The IANA standard MIME type of the source data."""
+
+
+FileDataOrDict = Union[FileData, FileDataDict]
+
+
+class FunctionCall(_common.BaseModel):
+    """A predicted [FunctionCall] returned from the model that contains a string representing the [FunctionDeclaration.name] and a structured JSON object containing the parameters and their values."""
+
+    args: Optional[dict[str, Any]] = Field(
+        default=None,
+        description="""Optional. The function parameters and values in JSON object format. See [FunctionDeclaration.parameters] for parameter details.""",
+    )
+    id: Optional[str] = Field(
+        default=None,
+        description="""Optional. The unique id of the function call. If populated, the client to execute the `function_call` and return the response with the matching `id`.""",
+    )
+    name: Optional[str] = Field(
+        default=None,
+        description="""Required. The name of the function to call. Matches [FunctionDeclaration.name].""",
+    )
+
+
+class FunctionCallDict(TypedDict, total=False):
+    """A predicted [FunctionCall] returned from the model that contains a string representing the [FunctionDeclaration.name] and a structured JSON object containing the parameters and their values."""
+
+    args: Optional[dict[str, Any]]
+    """Optional. The function parameters and values in JSON object format. See [FunctionDeclaration.parameters] for parameter details."""
+
+    id: Optional[str]
+    """Optional. The unique id of the function call. If populated, the client to execute the `function_call` and return the response with the matching `id`."""
+
+    name: Optional[str]
+    """Required. The name of the function to call. Matches [FunctionDeclaration.name]."""
+
+
+FunctionCallOrDict = Union[FunctionCall, FunctionCallDict]
+
+
+class FunctionResponse(_common.BaseModel):
+    """The result output from a [FunctionCall] that contains a string representing the [FunctionDeclaration.name] and a structured JSON object containing any output from the function is used as context to the model.
+
+    This should contain the result of a [FunctionCall] made based on model
+    prediction.
+    """
+
+    id: Optional[str] = Field(
+        default=None,
+        description="""Optional. The id of the function call this response is for. Populated by the client to match the corresponding function call `id`.""",
+    )
+    name: Optional[str] = Field(
+        default=None,
+        description="""Required. The name of the function to call. Matches [FunctionDeclaration.name] and [FunctionCall.name].""",
+    )
+    response: Optional[dict[str, Any]] = Field(
+        default=None,
+        description="""Required. The function response in JSON object format. Use "output" key to specify function output and "error" key to specify error details (if any). If "output" and "error" keys are not specified, then whole "response" is treated as function output.""",
+    )
+
+
+class FunctionResponseDict(TypedDict, total=False):
+    """The result output from a [FunctionCall] that contains a string representing the [FunctionDeclaration.name] and a structured JSON object containing any output from the function is used as context to the model.
+
+    This should contain the result of a [FunctionCall] made based on model
+    prediction.
+    """
+
+    id: Optional[str]
+    """Optional. The id of the function call this response is for. Populated by the client to match the corresponding function call `id`."""
+
+    name: Optional[str]
+    """Required. The name of the function to call. Matches [FunctionDeclaration.name] and [FunctionCall.name]."""
+
+    response: Optional[dict[str, Any]]
+    """Required. The function response in JSON object format. Use "output" key to specify function output and "error" key to specify error details (if any). If "output" and "error" keys are not specified, then whole "response" is treated as function output."""
+
+
+FunctionResponseOrDict = Union[FunctionResponse, FunctionResponseDict]
+
+
+class Blob(_common.BaseModel):
+    """Content blob."""
+
+    data: Optional[bytes] = Field(
+        default=None, description="""Required. Raw bytes."""
+    )
+    display_name: Optional[str] = Field(
+        default=None,
+        description="""Optional. Display name of the blob. Used to provide a label or filename to distinguish blobs. This field is only returned in PromptMessage for prompt management. It is currently used in the Gemini GenerateContent calls only when server side tools (code_execution, google_search, and url_context) are enabled.""",
+    )
+    mime_type: Optional[str] = Field(
+        default=None,
+        description="""Required. The IANA standard MIME type of the source data.""",
+    )
+
+
+class BlobDict(TypedDict, total=False):
+    """Content blob."""
+
+    data: Optional[bytes]
+    """Required. Raw bytes."""
+
+    display_name: Optional[str]
+    """Optional. Display name of the blob. Used to provide a label or filename to distinguish blobs. This field is only returned in PromptMessage for prompt management. It is currently used in the Gemini GenerateContent calls only when server side tools (code_execution, google_search, and url_context) are enabled."""
+
+    mime_type: Optional[str]
+    """Required. The IANA standard MIME type of the source data."""
+
+
+BlobOrDict = Union[Blob, BlobDict]
+
+
+class VideoMetadata(_common.BaseModel):
+    """Metadata describes the input video content."""
+
+    end_offset: Optional[str] = Field(
+        default=None, description="""Optional. The end offset of the video."""
+    )
+    start_offset: Optional[str] = Field(
+        default=None, description="""Optional. The start offset of the video."""
+    )
+
+
+class VideoMetadataDict(TypedDict, total=False):
+    """Metadata describes the input video content."""
+
+    end_offset: Optional[str]
+    """Optional. The end offset of the video."""
+
+    start_offset: Optional[str]
+    """Optional. The start offset of the video."""
+
+
+VideoMetadataOrDict = Union[VideoMetadata, VideoMetadataDict]
+
+
+class Part(_common.BaseModel):
+    """A datatype containing media that is part of a multi-part `Content` message.
+
+    A `Part` consists of data which has an associated datatype. A `Part` can
+    only contain one of the accepted types in `Part.data`. A `Part` must have a
+    fixed IANA MIME type identifying the type and subtype of the media if
+    `inline_data` or `file_data` field is filled with raw bytes.
+    """
+
+    code_execution_result: Optional[CodeExecutionResult] = Field(
+        default=None,
+        description="""Optional. Result of executing the [ExecutableCode].""",
+    )
+    executable_code: Optional[ExecutableCode] = Field(
+        default=None,
+        description="""Optional. Code generated by the model that is meant to be executed.""",
+    )
+    file_data: Optional[FileData] = Field(
+        default=None, description="""Optional. URI based data."""
+    )
+    function_call: Optional[FunctionCall] = Field(
+        default=None,
+        description="""Optional. A predicted [FunctionCall] returned from the model that contains a string representing the [FunctionDeclaration.name] with the parameters and their values.""",
+    )
+    function_response: Optional[FunctionResponse] = Field(
+        default=None,
+        description="""Optional. The result output of a [FunctionCall] that contains a string representing the [FunctionDeclaration.name] and a structured JSON object containing any output from the function call. It is used as context to the model.""",
+    )
+    inline_data: Optional[Blob] = Field(
+        default=None, description="""Optional. Inlined bytes data."""
+    )
+    text: Optional[str] = Field(
+        default=None, description="""Optional. Text part (can be code)."""
+    )
+    thought: Optional[bool] = Field(
+        default=None,
+        description="""Optional. Indicates if the part is thought from the model.""",
+    )
+    thought_signature: Optional[bytes] = Field(
+        default=None,
+        description="""Optional. An opaque signature for the thought so it can be reused in subsequent requests.""",
+    )
+    video_metadata: Optional[VideoMetadata] = Field(
+        default=None,
+        description="""Optional. Video metadata. The metadata should only be specified while the video data is presented in inline_data or file_data.""",
+    )
+
+
+class PartDict(TypedDict, total=False):
+    """A datatype containing media that is part of a multi-part `Content` message.
+
+    A `Part` consists of data which has an associated datatype. A `Part` can
+    only contain one of the accepted types in `Part.data`. A `Part` must have a
+    fixed IANA MIME type identifying the type and subtype of the media if
+    `inline_data` or `file_data` field is filled with raw bytes.
+    """
+
+    code_execution_result: Optional[CodeExecutionResultDict]
+    """Optional. Result of executing the [ExecutableCode]."""
+
+    executable_code: Optional[ExecutableCodeDict]
+    """Optional. Code generated by the model that is meant to be executed."""
+
+    file_data: Optional[FileDataDict]
+    """Optional. URI based data."""
+
+    function_call: Optional[FunctionCallDict]
+    """Optional. A predicted [FunctionCall] returned from the model that contains a string representing the [FunctionDeclaration.name] with the parameters and their values."""
+
+    function_response: Optional[FunctionResponseDict]
+    """Optional. The result output of a [FunctionCall] that contains a string representing the [FunctionDeclaration.name] and a structured JSON object containing any output from the function call. It is used as context to the model."""
+
+    inline_data: Optional[BlobDict]
+    """Optional. Inlined bytes data."""
+
+    text: Optional[str]
+    """Optional. Text part (can be code)."""
+
+    thought: Optional[bool]
+    """Optional. Indicates if the part is thought from the model."""
+
+    thought_signature: Optional[bytes]
+    """Optional. An opaque signature for the thought so it can be reused in subsequent requests."""
+
+    video_metadata: Optional[VideoMetadataDict]
+    """Optional. Video metadata. The metadata should only be specified while the video data is presented in inline_data or file_data."""
+
+
+PartOrDict = Union[Part, PartDict]
+
+
+class Content(_common.BaseModel):
+    """The base structured datatype containing multi-part content of a message.
+
+    A `Content` includes a `role` field designating the producer of the
+    `Content` and a `parts` field containing multi-part data that contains the
+    content of the message turn.
+    """
+
+    parts: Optional[list[Part]] = Field(
+        default=None,
+        description="""Required. Ordered `Parts` that constitute a single message. Parts may have different IANA MIME types.""",
+    )
+    role: Optional[str] = Field(
+        default=None,
+        description="""Optional. The producer of the content. Must be either 'user' or 'model'. Useful to set for multi-turn conversations, otherwise can be left blank or unset.""",
+    )
+
+
+class ContentDict(TypedDict, total=False):
+    """The base structured datatype containing multi-part content of a message.
+
+    A `Content` includes a `role` field designating the producer of the
+    `Content` and a `parts` field containing multi-part data that contains the
+    content of the message turn.
+    """
+
+    parts: Optional[list[PartDict]]
+    """Required. Ordered `Parts` that constitute a single message. Parts may have different IANA MIME types."""
+
+    role: Optional[str]
+    """Optional. The producer of the content. Must be either 'user' or 'model'. Useful to set for multi-turn conversations, otherwise can be left blank or unset."""
+
+
+ContentOrDict = Union[Content, ContentDict]
+
+
+class GenerateMemoriesRequestDirectContentsSourceEvent(_common.BaseModel):
+    """A single piece of conversation from which to generate memories."""
+
+    content: Optional[Content] = Field(
+        default=None,
+        description="""Required. A single piece of content from which to generate memories.""",
+    )
+
+
+class GenerateMemoriesRequestDirectContentsSourceEventDict(
+    TypedDict, total=False
+):
+    """A single piece of conversation from which to generate memories."""
+
+    content: Optional[ContentDict]
+    """Required. A single piece of content from which to generate memories."""
+
+
+GenerateMemoriesRequestDirectContentsSourceEventOrDict = Union[
+    GenerateMemoriesRequestDirectContentsSourceEvent,
+    GenerateMemoriesRequestDirectContentsSourceEventDict,
+]
+
+
+class GenerateMemoriesRequestDirectContentsSource(_common.BaseModel):
+    """The direct contents source for generating memories."""
+
+    events: Optional[list[GenerateMemoriesRequestDirectContentsSourceEvent]] = (
+        Field(
+            default=None,
+            description="""Required. The source content (i.e. chat history) to generate memories from.""",
+        )
+    )
+
+
+class GenerateMemoriesRequestDirectContentsSourceDict(TypedDict, total=False):
+    """The direct contents source for generating memories."""
+
+    events: Optional[list[GenerateMemoriesRequestDirectContentsSourceEventDict]]
+    """Required. The source content (i.e. chat history) to generate memories from."""
+
+
+GenerateMemoriesRequestDirectContentsSourceOrDict = Union[
+    GenerateMemoriesRequestDirectContentsSource,
+    GenerateMemoriesRequestDirectContentsSourceDict,
+]
+
+
+class GenerateAgentEngineMemoriesConfig(_common.BaseModel):
+    """Config for generating memories."""
+
+    http_options: Optional[HttpOptions] = Field(
+        default=None, description="""Used to override HTTP request options."""
+    )
+    disable_consolidation: Optional[bool] = Field(
+        default=None,
+        description="""Whether to disable consolidation of memories.
+
+      If true, generated memories will not be consolidated with existing
+      memories; all generated memories will be added as new memories regardless
+      of whether they are duplicates of or contradictory to existing memories.
+      By default, memory consolidation is enabled.""",
+    )
+    return_response: Optional[bool] = Field(
+        default=True,
+        description="""If True, the response from awaiting the operation will be returned.
+
+      Otherwise, the operation for generating memories for the agent will be
+      returned.""",
+    )
+
+
+class GenerateAgentEngineMemoriesConfigDict(TypedDict, total=False):
+    """Config for generating memories."""
+
+    http_options: Optional[HttpOptionsDict]
+    """Used to override HTTP request options."""
+
+    disable_consolidation: Optional[bool]
+    """Whether to disable consolidation of memories.
+
+      If true, generated memories will not be consolidated with existing
+      memories; all generated memories will be added as new memories regardless
+      of whether they are duplicates of or contradictory to existing memories.
+      By default, memory consolidation is enabled."""
+
+    return_response: Optional[bool]
+    """If True, the response from awaiting the operation will be returned.
+
+      Otherwise, the operation for generating memories for the agent will be
+      returned."""
+
+
+GenerateAgentEngineMemoriesConfigOrDict = Union[
+    GenerateAgentEngineMemoriesConfig, GenerateAgentEngineMemoriesConfigDict
+]
+
+
+class _GenerateAgentEngineMemoriesRequestParameters(_common.BaseModel):
+
+    name: Optional[str] = Field(
+        default=None,
+        description="""Name of the agent engine to generate memories for.""",
+    )
+    vertex_session_source: Optional[
+        GenerateMemoriesRequestVertexSessionSource
+    ] = Field(
+        default=None,
+        description="""The vertex session source of the memories that should be generated.""",
+    )
+    direct_contents_source: Optional[
+        GenerateMemoriesRequestDirectContentsSource
+    ] = Field(
+        default=None,
+        description="""The direct contents source of the memories that should be generated.""",
+    )
+    scope: Optional[dict[str, str]] = Field(
+        default=None,
+        description="""The scope of the memories that should be generated.
+
+      Memories will be consolidated across memories with the same scope. Must be
+      provided unless the scope is defined in the source content. If `scope` is
+      provided, it will override the scope defined in the source content. Scope
+      values cannot contain the wildcard character '*'.""",
+    )
+    config: Optional[GenerateAgentEngineMemoriesConfig] = Field(
+        default=None, description=""""""
+    )
+
+
+class _GenerateAgentEngineMemoriesRequestParametersDict(TypedDict, total=False):
+
+    name: Optional[str]
+    """Name of the agent engine to generate memories for."""
+
+    vertex_session_source: Optional[
+        GenerateMemoriesRequestVertexSessionSourceDict
+    ]
+    """The vertex session source of the memories that should be generated."""
+
+    direct_contents_source: Optional[
+        GenerateMemoriesRequestDirectContentsSourceDict
+    ]
+    """The direct contents source of the memories that should be generated."""
+
+    scope: Optional[dict[str, str]]
+    """The scope of the memories that should be generated.
+
+      Memories will be consolidated across memories with the same scope. Must be
+      provided unless the scope is defined in the source content. If `scope` is
+      provided, it will override the scope defined in the source content. Scope
+      values cannot contain the wildcard character '*'."""
+
+    config: Optional[GenerateAgentEngineMemoriesConfigDict]
+    """"""
+
+
+_GenerateAgentEngineMemoriesRequestParametersOrDict = Union[
+    _GenerateAgentEngineMemoriesRequestParameters,
+    _GenerateAgentEngineMemoriesRequestParametersDict,
+]
+
+
+class GenerateMemoriesResponseGeneratedMemory(_common.BaseModel):
+    """A memmory that was generated."""
+
+    memory: Optional[Memory] = Field(
+        default=None, description="""The generated memory."""
+    )
+    action: Optional[GenerateMemoriesResponseGeneratedMemoryAction] = Field(
+        default=None, description="""The action to take."""
+    )
+
+
+class GenerateMemoriesResponseGeneratedMemoryDict(TypedDict, total=False):
+    """A memmory that was generated."""
+
+    memory: Optional[MemoryDict]
+    """The generated memory."""
+
+    action: Optional[GenerateMemoriesResponseGeneratedMemoryAction]
+    """The action to take."""
+
+
+GenerateMemoriesResponseGeneratedMemoryOrDict = Union[
+    GenerateMemoriesResponseGeneratedMemory,
+    GenerateMemoriesResponseGeneratedMemoryDict,
+]
+
+
+class GenerateMemoriesResponse(_common.BaseModel):
+    """The response for generating memories."""
+
+    generated_memories: Optional[
+        list[GenerateMemoriesResponseGeneratedMemory]
+    ] = Field(default=None, description="""The generated memories.""")
+
+
+class GenerateMemoriesResponseDict(TypedDict, total=False):
+    """The response for generating memories."""
+
+    generated_memories: Optional[
+        list[GenerateMemoriesResponseGeneratedMemoryDict]
+    ]
+    """The generated memories."""
+
+
+GenerateMemoriesResponseOrDict = Union[
+    GenerateMemoriesResponse, GenerateMemoriesResponseDict
+]
+
+
+class AgentEngineGenerateMemoriesOperation(_common.BaseModel):
+    """Operation that generates memories for an agent engine."""
+
+    name: Optional[str] = Field(
+        default=None,
+        description="""The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`.""",
+    )
+    metadata: Optional[dict[str, Any]] = Field(
+        default=None,
+        description="""Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata.  Any method that returns a long-running operation should document the metadata type, if any.""",
+    )
+    done: Optional[bool] = Field(
+        default=None,
+        description="""If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available.""",
+    )
+    error: Optional[dict[str, Any]] = Field(
+        default=None,
+        description="""The error result of the operation in case of failure or cancellation.""",
+    )
+    response: Optional[GenerateMemoriesResponse] = Field(
+        default=None, description="""The response for generating memories."""
+    )
+
+
+class AgentEngineGenerateMemoriesOperationDict(TypedDict, total=False):
+    """Operation that generates memories for an agent engine."""
+
+    name: Optional[str]
+    """The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`."""
+
+    metadata: Optional[dict[str, Any]]
+    """Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata.  Any method that returns a long-running operation should document the metadata type, if any."""
+
+    done: Optional[bool]
+    """If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available."""
+
+    error: Optional[dict[str, Any]]
+    """The error result of the operation in case of failure or cancellation."""
+
+    response: Optional[GenerateMemoriesResponseDict]
+    """The response for generating memories."""
+
+
+AgentEngineGenerateMemoriesOperationOrDict = Union[
+    AgentEngineGenerateMemoriesOperation,
+    AgentEngineGenerateMemoriesOperationDict,
+]
+
+
 class GetAgentEngineConfig(_common.BaseModel):
     """Config for create agent engine."""
 
@@ -2996,7 +4142,9 @@ class GetAgentEngineConfigDict(TypedDict, total=False):
     """Used to override HTTP request options."""
 
 
-GetAgentEngineConfigOrDict = Union[GetAgentEngineConfig, GetAgentEngineConfigDict]
+GetAgentEngineConfigOrDict = Union[
+    GetAgentEngineConfig, GetAgentEngineConfigDict
+]
 
 
 class _GetAgentEngineRequestParameters(_common.BaseModel):
@@ -3005,7 +4153,9 @@ class _GetAgentEngineRequestParameters(_common.BaseModel):
     name: Optional[str] = Field(
         default=None, description="""Name of the agent engine."""
     )
-    config: Optional[GetAgentEngineConfig] = Field(default=None, description="""""")
+    config: Optional[GetAgentEngineConfig] = Field(
+        default=None, description=""""""
+    )
 
 
 class _GetAgentEngineRequestParametersDict(TypedDict, total=False):
@@ -3020,6 +4170,53 @@ class _GetAgentEngineRequestParametersDict(TypedDict, total=False):
 
 _GetAgentEngineRequestParametersOrDict = Union[
     _GetAgentEngineRequestParameters, _GetAgentEngineRequestParametersDict
+]
+
+
+class GetAgentEngineMemoryConfig(_common.BaseModel):
+    """Config for create agent engine."""
+
+    http_options: Optional[HttpOptions] = Field(
+        default=None, description="""Used to override HTTP request options."""
+    )
+
+
+class GetAgentEngineMemoryConfigDict(TypedDict, total=False):
+    """Config for create agent engine."""
+
+    http_options: Optional[HttpOptionsDict]
+    """Used to override HTTP request options."""
+
+
+GetAgentEngineMemoryConfigOrDict = Union[
+    GetAgentEngineMemoryConfig, GetAgentEngineMemoryConfigDict
+]
+
+
+class _GetAgentEngineMemoryRequestParameters(_common.BaseModel):
+    """Parameters for getting agent engines."""
+
+    name: Optional[str] = Field(
+        default=None, description="""Name of the agent engine."""
+    )
+    config: Optional[GetAgentEngineMemoryConfig] = Field(
+        default=None, description=""""""
+    )
+
+
+class _GetAgentEngineMemoryRequestParametersDict(TypedDict, total=False):
+    """Parameters for getting agent engines."""
+
+    name: Optional[str]
+    """Name of the agent engine."""
+
+    config: Optional[GetAgentEngineMemoryConfigDict]
+    """"""
+
+
+_GetAgentEngineMemoryRequestParametersOrDict = Union[
+    _GetAgentEngineMemoryRequestParameters,
+    _GetAgentEngineMemoryRequestParametersDict,
 ]
 
 
@@ -3055,13 +4252,17 @@ class ListAgentEngineConfigDict(TypedDict, total=False):
       For field names both snake_case and camelCase are supported."""
 
 
-ListAgentEngineConfigOrDict = Union[ListAgentEngineConfig, ListAgentEngineConfigDict]
+ListAgentEngineConfigOrDict = Union[
+    ListAgentEngineConfig, ListAgentEngineConfigDict
+]
 
 
 class _ListAgentEngineRequestParameters(_common.BaseModel):
     """Parameters for listing agent engines."""
 
-    config: Optional[ListAgentEngineConfig] = Field(default=None, description="""""")
+    config: Optional[ListAgentEngineConfig] = Field(
+        default=None, description=""""""
+    )
 
 
 class _ListAgentEngineRequestParametersDict(TypedDict, total=False):
@@ -3103,6 +4304,95 @@ ListReasoningEnginesResponseOrDict = Union[
 ]
 
 
+class ListAgentEngineMemoryConfig(_common.BaseModel):
+    """Config for listing agent engine memories."""
+
+    http_options: Optional[HttpOptions] = Field(
+        default=None, description="""Used to override HTTP request options."""
+    )
+    page_size: Optional[int] = Field(default=None, description="""""")
+    page_token: Optional[str] = Field(default=None, description="""""")
+    filter: Optional[str] = Field(
+        default=None,
+        description="""An expression for filtering the results of the request.
+      For field names both snake_case and camelCase are supported.""",
+    )
+
+
+class ListAgentEngineMemoryConfigDict(TypedDict, total=False):
+    """Config for listing agent engine memories."""
+
+    http_options: Optional[HttpOptionsDict]
+    """Used to override HTTP request options."""
+
+    page_size: Optional[int]
+    """"""
+
+    page_token: Optional[str]
+    """"""
+
+    filter: Optional[str]
+    """An expression for filtering the results of the request.
+      For field names both snake_case and camelCase are supported."""
+
+
+ListAgentEngineMemoryConfigOrDict = Union[
+    ListAgentEngineMemoryConfig, ListAgentEngineMemoryConfigDict
+]
+
+
+class _ListAgentEngineMemoryRequestParameters(_common.BaseModel):
+    """Parameters for listing agent engines."""
+
+    name: Optional[str] = Field(
+        default=None, description="""Name of the agent engine."""
+    )
+    config: Optional[ListAgentEngineMemoryConfig] = Field(
+        default=None, description=""""""
+    )
+
+
+class _ListAgentEngineMemoryRequestParametersDict(TypedDict, total=False):
+    """Parameters for listing agent engines."""
+
+    name: Optional[str]
+    """Name of the agent engine."""
+
+    config: Optional[ListAgentEngineMemoryConfigDict]
+    """"""
+
+
+_ListAgentEngineMemoryRequestParametersOrDict = Union[
+    _ListAgentEngineMemoryRequestParameters,
+    _ListAgentEngineMemoryRequestParametersDict,
+]
+
+
+class ListReasoningEnginesMemoriesResponse(_common.BaseModel):
+    """Response for listing agent engine memories."""
+
+    next_page_token: Optional[str] = Field(default=None, description="""""")
+    memories: Optional[list[Memory]] = Field(
+        default=None, description="""List of agent engine memories."""
+    )
+
+
+class ListReasoningEnginesMemoriesResponseDict(TypedDict, total=False):
+    """Response for listing agent engine memories."""
+
+    next_page_token: Optional[str]
+    """"""
+
+    memories: Optional[list[MemoryDict]]
+    """List of agent engine memories."""
+
+
+ListReasoningEnginesMemoriesResponseOrDict = Union[
+    ListReasoningEnginesMemoriesResponse,
+    ListReasoningEnginesMemoriesResponseDict,
+]
+
+
 class GetAgentEngineOperationConfig(_common.BaseModel):
 
     http_options: Optional[HttpOptions] = Field(
@@ -3122,7 +4412,7 @@ GetAgentEngineOperationConfigOrDict = Union[
 
 
 class _GetAgentEngineOperationParameters(_common.BaseModel):
-    """Parameters for the GET method."""
+    """Parameters for getting an operation with an agent engine as a response."""
 
     operation_name: Optional[str] = Field(
         default=None,
@@ -3135,7 +4425,7 @@ class _GetAgentEngineOperationParameters(_common.BaseModel):
 
 
 class _GetAgentEngineOperationParametersDict(TypedDict, total=False):
-    """Parameters for the GET method."""
+    """Parameters for getting an operation with an agent engine as a response."""
 
     operation_name: Optional[str]
     """The server-assigned name for the operation."""
@@ -3146,6 +4436,66 @@ class _GetAgentEngineOperationParametersDict(TypedDict, total=False):
 
 _GetAgentEngineOperationParametersOrDict = Union[
     _GetAgentEngineOperationParameters, _GetAgentEngineOperationParametersDict
+]
+
+
+class _GetAgentEngineMemoryOperationParameters(_common.BaseModel):
+    """Parameters for getting an operation with a memory as a response."""
+
+    operation_name: Optional[str] = Field(
+        default=None,
+        description="""The server-assigned name for the operation.""",
+    )
+    config: Optional[GetAgentEngineOperationConfig] = Field(
+        default=None,
+        description="""Used to override the default configuration.""",
+    )
+
+
+class _GetAgentEngineMemoryOperationParametersDict(TypedDict, total=False):
+    """Parameters for getting an operation with a memory as a response."""
+
+    operation_name: Optional[str]
+    """The server-assigned name for the operation."""
+
+    config: Optional[GetAgentEngineOperationConfigDict]
+    """Used to override the default configuration."""
+
+
+_GetAgentEngineMemoryOperationParametersOrDict = Union[
+    _GetAgentEngineMemoryOperationParameters,
+    _GetAgentEngineMemoryOperationParametersDict,
+]
+
+
+class _GetAgentEngineGenerateMemoriesOperationParameters(_common.BaseModel):
+    """Parameters for getting an operation with generated memories as a response."""
+
+    operation_name: Optional[str] = Field(
+        default=None,
+        description="""The server-assigned name for the operation.""",
+    )
+    config: Optional[GetAgentEngineOperationConfig] = Field(
+        default=None,
+        description="""Used to override the default configuration.""",
+    )
+
+
+class _GetAgentEngineGenerateMemoriesOperationParametersDict(
+    TypedDict, total=False
+):
+    """Parameters for getting an operation with generated memories as a response."""
+
+    operation_name: Optional[str]
+    """The server-assigned name for the operation."""
+
+    config: Optional[GetAgentEngineOperationConfigDict]
+    """Used to override the default configuration."""
+
+
+_GetAgentEngineGenerateMemoriesOperationParametersOrDict = Union[
+    _GetAgentEngineGenerateMemoriesOperationParameters,
+    _GetAgentEngineGenerateMemoriesOperationParametersDict,
 ]
 
 
@@ -3161,7 +4511,9 @@ class QueryAgentEngineConfig(_common.BaseModel):
     input: Optional[dict[str, Any]] = Field(
         default=None, description="""The input to the class method."""
     )
-    include_all_fields: Optional[bool] = Field(default=False, description="""""")
+    include_all_fields: Optional[bool] = Field(
+        default=False, description=""""""
+    )
 
 
 class QueryAgentEngineConfigDict(TypedDict, total=False):
@@ -3180,7 +4532,9 @@ class QueryAgentEngineConfigDict(TypedDict, total=False):
     """"""
 
 
-QueryAgentEngineConfigOrDict = Union[QueryAgentEngineConfig, QueryAgentEngineConfigDict]
+QueryAgentEngineConfigOrDict = Union[
+    QueryAgentEngineConfig, QueryAgentEngineConfigDict
+]
 
 
 class _QueryAgentEngineRequestParameters(_common.BaseModel):
@@ -3189,7 +4543,9 @@ class _QueryAgentEngineRequestParameters(_common.BaseModel):
     name: Optional[str] = Field(
         default=None, description="""Name of the agent engine."""
     )
-    config: Optional[QueryAgentEngineConfig] = Field(default=None, description="""""")
+    config: Optional[QueryAgentEngineConfig] = Field(
+        default=None, description=""""""
+    )
 
 
 class _QueryAgentEngineRequestParametersDict(TypedDict, total=False):
@@ -3225,6 +4581,202 @@ class QueryReasoningEngineResponseDict(TypedDict, total=False):
 
 QueryReasoningEngineResponseOrDict = Union[
     QueryReasoningEngineResponse, QueryReasoningEngineResponseDict
+]
+
+
+class RetrieveMemoriesRequestSimilaritySearchParams(_common.BaseModel):
+    """The parameters for semantic similarity search based retrieval."""
+
+    search_query: Optional[str] = Field(
+        default=None,
+        description="""Required. Query to use for similarity search retrieval. If provided, then the parent ReasoningEngine must have ReasoningEngineContextSpec.MemoryBankConfig.SimilaritySearchConfig set.""",
+    )
+    top_k: Optional[int] = Field(
+        default=None,
+        description="""Optional. The maximum number of memories to return. The service may return fewer than this value. If unspecified, at most 3 memories will be returned. The maximum value is 100; values above 100 will be coerced to 100.""",
+    )
+
+
+class RetrieveMemoriesRequestSimilaritySearchParamsDict(TypedDict, total=False):
+    """The parameters for semantic similarity search based retrieval."""
+
+    search_query: Optional[str]
+    """Required. Query to use for similarity search retrieval. If provided, then the parent ReasoningEngine must have ReasoningEngineContextSpec.MemoryBankConfig.SimilaritySearchConfig set."""
+
+    top_k: Optional[int]
+    """Optional. The maximum number of memories to return. The service may return fewer than this value. If unspecified, at most 3 memories will be returned. The maximum value is 100; values above 100 will be coerced to 100."""
+
+
+RetrieveMemoriesRequestSimilaritySearchParamsOrDict = Union[
+    RetrieveMemoriesRequestSimilaritySearchParams,
+    RetrieveMemoriesRequestSimilaritySearchParamsDict,
+]
+
+
+class RetrieveMemoriesRequestSimpleRetrievalParams(_common.BaseModel):
+    """The parameters for simple (non-similarity search) retrieval."""
+
+    page_size: Optional[int] = Field(
+        default=None,
+        description="""Optional. The maximum number of memories to return. The service may return fewer than this value. If unspecified, at most 3 memories will be returned. The maximum value is 100; values above 100 will be coerced to 100.""",
+    )
+    page_token: Optional[str] = Field(
+        default=None,
+        description="""Optional. A page token, received from a previous `RetrieveMemories` call. Provide this to retrieve the subsequent page.""",
+    )
+
+
+class RetrieveMemoriesRequestSimpleRetrievalParamsDict(TypedDict, total=False):
+    """The parameters for simple (non-similarity search) retrieval."""
+
+    page_size: Optional[int]
+    """Optional. The maximum number of memories to return. The service may return fewer than this value. If unspecified, at most 3 memories will be returned. The maximum value is 100; values above 100 will be coerced to 100."""
+
+    page_token: Optional[str]
+    """Optional. A page token, received from a previous `RetrieveMemories` call. Provide this to retrieve the subsequent page."""
+
+
+RetrieveMemoriesRequestSimpleRetrievalParamsOrDict = Union[
+    RetrieveMemoriesRequestSimpleRetrievalParams,
+    RetrieveMemoriesRequestSimpleRetrievalParamsDict,
+]
+
+
+class RetrieveAgentEngineMemoriesConfig(_common.BaseModel):
+    """Config for retrieving memories."""
+
+    http_options: Optional[HttpOptions] = Field(
+        default=None, description="""Used to override HTTP request options."""
+    )
+
+
+class RetrieveAgentEngineMemoriesConfigDict(TypedDict, total=False):
+    """Config for retrieving memories."""
+
+    http_options: Optional[HttpOptionsDict]
+    """Used to override HTTP request options."""
+
+
+RetrieveAgentEngineMemoriesConfigOrDict = Union[
+    RetrieveAgentEngineMemoriesConfig, RetrieveAgentEngineMemoriesConfigDict
+]
+
+
+class _RetrieveAgentEngineMemoriesRequestParameters(_common.BaseModel):
+
+    name: Optional[str] = Field(
+        default=None,
+        description="""Name of the agent engine to retrieve memories from.""",
+    )
+    similarity_search_params: Optional[
+        RetrieveMemoriesRequestSimilaritySearchParams
+    ] = Field(
+        default=None,
+        description="""Parameters for semantic similarity search based retrieval.""",
+    )
+    simple_retrieval_params: Optional[
+        RetrieveMemoriesRequestSimpleRetrievalParams
+    ] = Field(
+        default=None,
+        description="""Parameters for simple (non-similarity search) retrieval.""",
+    )
+    scope: Optional[dict[str, str]] = Field(
+        default=None,
+        description="""The scope of the memories to retrieve. A memory must have exactly
+
+      the same scope as the scope provided here to be retrieved (i.e. same keys
+      and values). Order does not matter, but it is case-sensitive.""",
+    )
+    config: Optional[RetrieveAgentEngineMemoriesConfig] = Field(
+        default=None, description=""""""
+    )
+
+
+class _RetrieveAgentEngineMemoriesRequestParametersDict(TypedDict, total=False):
+
+    name: Optional[str]
+    """Name of the agent engine to retrieve memories from."""
+
+    similarity_search_params: Optional[
+        RetrieveMemoriesRequestSimilaritySearchParamsDict
+    ]
+    """Parameters for semantic similarity search based retrieval."""
+
+    simple_retrieval_params: Optional[
+        RetrieveMemoriesRequestSimpleRetrievalParamsDict
+    ]
+    """Parameters for simple (non-similarity search) retrieval."""
+
+    scope: Optional[dict[str, str]]
+    """The scope of the memories to retrieve. A memory must have exactly
+
+      the same scope as the scope provided here to be retrieved (i.e. same keys
+      and values). Order does not matter, but it is case-sensitive."""
+
+    config: Optional[RetrieveAgentEngineMemoriesConfigDict]
+    """"""
+
+
+_RetrieveAgentEngineMemoriesRequestParametersOrDict = Union[
+    _RetrieveAgentEngineMemoriesRequestParameters,
+    _RetrieveAgentEngineMemoriesRequestParametersDict,
+]
+
+
+class RetrieveMemoriesResponseRetrievedMemory(_common.BaseModel):
+    """A retrieved memory."""
+
+    distance: Optional[float] = Field(
+        default=None,
+        description="""The distance between the query and the retrieved Memory. Smaller values indicate more similar memories. This is only set if similarity search was used for retrieval.""",
+    )
+    memory: Optional[Memory] = Field(
+        default=None, description="""The retrieved Memory."""
+    )
+
+
+class RetrieveMemoriesResponseRetrievedMemoryDict(TypedDict, total=False):
+    """A retrieved memory."""
+
+    distance: Optional[float]
+    """The distance between the query and the retrieved Memory. Smaller values indicate more similar memories. This is only set if similarity search was used for retrieval."""
+
+    memory: Optional[MemoryDict]
+    """The retrieved Memory."""
+
+
+RetrieveMemoriesResponseRetrievedMemoryOrDict = Union[
+    RetrieveMemoriesResponseRetrievedMemory,
+    RetrieveMemoriesResponseRetrievedMemoryDict,
+]
+
+
+class RetrieveMemoriesResponse(_common.BaseModel):
+    """The response for retrieving memories."""
+
+    next_page_token: Optional[str] = Field(
+        default=None,
+        description="""A token that can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages. This token is not set if similarity search was used for retrieval.""",
+    )
+    retrieved_memories: Optional[
+        list[RetrieveMemoriesResponseRetrievedMemory]
+    ] = Field(default=None, description="""The retrieved memories.""")
+
+
+class RetrieveMemoriesResponseDict(TypedDict, total=False):
+    """The response for retrieving memories."""
+
+    next_page_token: Optional[str]
+    """A token that can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages. This token is not set if similarity search was used for retrieval."""
+
+    retrieved_memories: Optional[
+        list[RetrieveMemoriesResponseRetrievedMemoryDict]
+    ]
+    """The retrieved memories."""
+
+
+RetrieveMemoriesResponseOrDict = Union[
+    RetrieveMemoriesResponse, RetrieveMemoriesResponseDict
 ]
 
 
@@ -3291,7 +4843,9 @@ class _UpdateAgentEngineRequestParameters(_common.BaseModel):
     name: Optional[str] = Field(
         default=None, description="""Name of the agent engine."""
     )
-    config: Optional[UpdateAgentEngineConfig] = Field(default=None, description="""""")
+    config: Optional[UpdateAgentEngineConfig] = Field(
+        default=None, description=""""""
+    )
 
 
 class _UpdateAgentEngineRequestParametersDict(TypedDict, total=False):
@@ -3309,13 +4863,84 @@ _UpdateAgentEngineRequestParametersOrDict = Union[
 ]
 
 
+class UpdateAgentEngineMemoryConfig(_common.BaseModel):
+    """Config for updating agent engine memory."""
+
+    http_options: Optional[HttpOptions] = Field(
+        default=None, description="""Used to override HTTP request options."""
+    )
+    display_name: Optional[str] = Field(
+        default=None, description="""The display name of the memory."""
+    )
+    description: Optional[str] = Field(
+        default=None, description="""The description of the memory."""
+    )
+    update_mask: Optional[str] = Field(
+        default=None,
+        description="""The update mask to apply. For the `FieldMask` definition, see
+      https://protobuf.dev/reference/protobuf/google.protobuf/#field-mask.""",
+    )
+
+
+class UpdateAgentEngineMemoryConfigDict(TypedDict, total=False):
+    """Config for updating agent engine memory."""
+
+    http_options: Optional[HttpOptionsDict]
+    """Used to override HTTP request options."""
+
+    display_name: Optional[str]
+    """The display name of the memory."""
+
+    description: Optional[str]
+    """The description of the memory."""
+
+    update_mask: Optional[str]
+    """The update mask to apply. For the `FieldMask` definition, see
+      https://protobuf.dev/reference/protobuf/google.protobuf/#field-mask."""
+
+
+UpdateAgentEngineMemoryConfigOrDict = Union[
+    UpdateAgentEngineMemoryConfig, UpdateAgentEngineMemoryConfigDict
+]
+
+
+class _UpdateAgentEngineMemoryRequestParameters(_common.BaseModel):
+    """Parameters for updating agent engine memories."""
+
+    name: Optional[str] = Field(
+        default=None,
+        description="""Name of the agent engine memory to update.""",
+    )
+    config: Optional[UpdateAgentEngineMemoryConfig] = Field(
+        default=None, description=""""""
+    )
+
+
+class _UpdateAgentEngineMemoryRequestParametersDict(TypedDict, total=False):
+    """Parameters for updating agent engine memories."""
+
+    name: Optional[str]
+    """Name of the agent engine memory to update."""
+
+    config: Optional[UpdateAgentEngineMemoryConfigDict]
+    """"""
+
+
+_UpdateAgentEngineMemoryRequestParametersOrDict = Union[
+    _UpdateAgentEngineMemoryRequestParameters,
+    _UpdateAgentEngineMemoryRequestParametersDict,
+]
+
+
 class PromptOptimizerVAPOConfig(_common.BaseModel):
     """VAPO Prompt Optimizer Config."""
 
     config_path: Optional[str] = Field(
         default=None, description="""The gcs path to the config file."""
     )
-    wait_for_completion: Optional[bool] = Field(default=None, description="""""")
+    wait_for_completion: Optional[bool] = Field(
+        default=None, description=""""""
+    )
 
 
 class PromptOptimizerVAPOConfigDict(TypedDict, total=False):
@@ -3346,7 +4971,8 @@ class PromptTemplate(_common.BaseModel):
     def text_must_not_be_empty(cls, value: str) -> str:
         if not value.strip():
             raise ValueError(
-                "Prompt template text cannot be empty or consist only of" " whitespace."
+                "Prompt template text cannot be empty or consist only of"
+                " whitespace."
             )
         return value
 
@@ -3389,7 +5015,9 @@ class PromptTemplate(_common.BaseModel):
                 current_text_buffer.append(part.text)
             else:
                 if current_text_buffer:
-                    merged.append(genai_types.Part(text="".join(current_text_buffer)))
+                    merged.append(
+                        genai_types.Part(text="".join(current_text_buffer))
+                    )
                     current_text_buffer = []
                 merged.append(part)
 
@@ -3414,7 +5042,10 @@ class PromptTemplate(_common.BaseModel):
                     if not data["contents"]:
                         return False
                     first_content = data["contents"][0]
-                    if isinstance(first_content, dict) and "parts" in first_content:
+                    if (
+                        isinstance(first_content, dict)
+                        and "parts" in first_content
+                    ):
                         try:
                             genai_types.Content.model_validate(first_content)
                             return True
@@ -3492,7 +5123,9 @@ class PromptTemplate(_common.BaseModel):
         # Check if all template variables are provided in kwargs
         for tpl_var in current_variables:
             if tpl_var not in kwargs:
-                raise ValueError(f"Missing value for template variable '{tpl_var}'.")
+                raise ValueError(
+                    f"Missing value for template variable '{tpl_var}'."
+                )
 
         template_segments = self._split_template_by_variables()
 
@@ -3502,25 +5135,35 @@ class PromptTemplate(_common.BaseModel):
         for segment_type, segment_value in template_segments:
             if segment_type == "text":
                 if segment_value:
-                    raw_assembled_parts.append(genai_types.Part(text=segment_value))
+                    raw_assembled_parts.append(
+                        genai_types.Part(text=segment_value)
+                    )
             elif segment_type == "var":
                 var_value = kwargs.get(segment_value)
 
                 str_var_value = str(var_value)
 
                 if self._is_multimodal_json_string(str_var_value):
-                    multimodal_parts = self._parse_multimodal_json_string_into_parts(
-                        str_var_value
+                    multimodal_parts = (
+                        self._parse_multimodal_json_string_into_parts(
+                            str_var_value
+                        )
                     )
                     if multimodal_parts:
                         contains_multimodal_variable_type = True
                         raw_assembled_parts.extend(multimodal_parts)
                     else:
-                        raw_assembled_parts.append(genai_types.Part(text=str_var_value))
+                        raw_assembled_parts.append(
+                            genai_types.Part(text=str_var_value)
+                        )
                 else:
-                    raw_assembled_parts.append(genai_types.Part(text=str_var_value))
+                    raw_assembled_parts.append(
+                        genai_types.Part(text=str_var_value)
+                    )
 
-        final_assembled_parts = self._merge_adjacent_text_parts(raw_assembled_parts)
+        final_assembled_parts = self._merge_adjacent_text_parts(
+            raw_assembled_parts
+        )
 
         # Condition for returning raw text string:
         # 1. No multimodal variable was *originally* a multimodal JSON string.
@@ -3633,7 +5276,9 @@ class MetricPromptBuilder(PromptTemplate):
         """Serializes dictionary to ordered string value without brackets."""
         if elements is None:
             return ""
-        return "\n".join(f"{key}: {value}" for key, value in sorted(elements.items()))
+        return "\n".join(
+            f"{key}: {value}" for key, value in sorted(elements.items())
+        )
 
     @model_validator(mode="before")
     @classmethod
@@ -3741,9 +5386,11 @@ class EvalRunInferenceConfig(_common.BaseModel):
         default=None,
         description="""The prompt template to use for inference.""",
     )
-    generate_content_config: Optional[genai_types.GenerateContentConfig] = Field(
-        default=None,
-        description="""The config for the generate content call.""",
+    generate_content_config: Optional[genai_types.GenerateContentConfig] = (
+        Field(
+            default=None,
+            description="""The config for the generate content call.""",
+        )
     )
 
 
@@ -3760,7 +5407,9 @@ class EvalRunInferenceConfigDict(TypedDict, total=False):
     """The config for the generate content call."""
 
 
-EvalRunInferenceConfigOrDict = Union[EvalRunInferenceConfig, EvalRunInferenceConfigDict]
+EvalRunInferenceConfigOrDict = Union[
+    EvalRunInferenceConfig, EvalRunInferenceConfigDict
+]
 
 
 class WinRateStats(_common.BaseModel):
@@ -3794,7 +5443,9 @@ class EvalCaseMetricResult(_common.BaseModel):
     metric_name: Optional[str] = Field(
         default=None, description="""Name of the metric."""
     )
-    score: Optional[float] = Field(default=None, description="""Score of the metric.""")
+    score: Optional[float] = Field(
+        default=None, description="""Score of the metric."""
+    )
     explanation: Optional[str] = Field(
         default=None, description="""Explanation of the metric."""
     )
@@ -3832,7 +5483,9 @@ class EvalCaseMetricResultDict(TypedDict, total=False):
     """Error message for the metric."""
 
 
-EvalCaseMetricResultOrDict = Union[EvalCaseMetricResult, EvalCaseMetricResultDict]
+EvalCaseMetricResultOrDict = Union[
+    EvalCaseMetricResult, EvalCaseMetricResultDict
+]
 
 
 class ResponseCandidateResult(_common.BaseModel):
@@ -3937,7 +5590,9 @@ class AggregatedMetricResultDict(TypedDict, total=False):
     """Standard deviation of the metric."""
 
 
-AggregatedMetricResultOrDict = Union[AggregatedMetricResult, AggregatedMetricResultDict]
+AggregatedMetricResultOrDict = Union[
+    AggregatedMetricResult, AggregatedMetricResultDict
+]
 
 
 class EvaluationRunMetadata(_common.BaseModel):
@@ -3977,7 +5632,9 @@ class EvaluationRunMetadataDict(TypedDict, total=False):
     """Creation timestamp of the evaluation run."""
 
 
-EvaluationRunMetadataOrDict = Union[EvaluationRunMetadata, EvaluationRunMetadataDict]
+EvaluationRunMetadataOrDict = Union[
+    EvaluationRunMetadata, EvaluationRunMetadataDict
+]
 
 
 class EvaluationResult(_common.BaseModel):
@@ -4070,7 +5727,9 @@ class EvaluateMethodConfigDict(TypedDict, total=False):
     """The destination path for the evaluation results."""
 
 
-EvaluateMethodConfigOrDict = Union[EvaluateMethodConfig, EvaluateMethodConfigDict]
+EvaluateMethodConfigOrDict = Union[
+    EvaluateMethodConfig, EvaluateMethodConfigDict
+]
 
 
 class AgentEngine(_common.BaseModel):
@@ -4119,7 +5778,9 @@ class AgentEngine(_common.BaseModel):
         """
         if not isinstance(self.api_resource, ReasoningEngine):
             raise ValueError("api_resource is not initialized.")
-        self.api_client.delete(name=self.api_resource.name, force=force, config=config)
+        self.api_client.delete(
+            name=self.api_resource.name, force=force, config=config
+        )
 
 
 class AgentEngineDict(TypedDict, total=False):
@@ -4185,13 +5846,6 @@ class AgentEngineConfig(_common.BaseModel):
       If it is a dictionary, the keys are the environment variable names, and
       the values are the corresponding values.""",
     )
-    return_agent: Optional[bool] = Field(
-        default=True,
-        description="""If True, the agent will be returned.
-
-      Otherwise, the operation for creating or updating the agent will be
-      returned.""",
-    )
 
 
 class AgentEngineConfigDict(TypedDict, total=False):
@@ -4235,11 +5889,55 @@ class AgentEngineConfigDict(TypedDict, total=False):
       If it is a dictionary, the keys are the environment variable names, and
       the values are the corresponding values."""
 
-    return_agent: Optional[bool]
-    """If True, the agent will be returned.
 
-      Otherwise, the operation for creating or updating the agent will be
+AgentEngineConfigOrDict = Union[AgentEngineConfig, AgentEngineConfigDict]
+
+
+class GenerateMemoriesConfig(_common.BaseModel):
+    """Config for generating memories."""
+
+    http_options: Optional[HttpOptions] = Field(
+        default=None, description="""Used to override HTTP request options."""
+    )
+    disable_consolidation: Optional[bool] = Field(
+        default=None,
+        description="""Whether to disable consolidation of memories.
+
+      If true, generated memories will not be consolidated with existing
+      memories; all generated memories will be added as new memories regardless
+      of whether they are duplicates of or contradictory to existing memories.
+      By default, memory consolidation is enabled.""",
+    )
+    return_response: Optional[bool] = Field(
+        default=True,
+        description="""If True, the response from awaiting the operation will be returned.
+
+      Otherwise, the operation for generating memories for the agent will be
+      returned.""",
+    )
+
+
+class GenerateMemoriesConfigDict(TypedDict, total=False):
+    """Config for generating memories."""
+
+    http_options: Optional[HttpOptionsDict]
+    """Used to override HTTP request options."""
+
+    disable_consolidation: Optional[bool]
+    """Whether to disable consolidation of memories.
+
+      If true, generated memories will not be consolidated with existing
+      memories; all generated memories will be added as new memories regardless
+      of whether they are duplicates of or contradictory to existing memories.
+      By default, memory consolidation is enabled."""
+
+    return_response: Optional[bool]
+    """If True, the response from awaiting the operation will be returned.
+
+      Otherwise, the operation for generating memories for the agent will be
       returned."""
 
 
-AgentEngineConfigOrDict = Union[AgentEngineConfig, AgentEngineConfigDict]
+GenerateMemoriesConfigOrDict = Union[
+    GenerateMemoriesConfig, GenerateMemoriesConfigDict
+]
