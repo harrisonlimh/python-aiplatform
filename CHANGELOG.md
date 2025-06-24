@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.100.0](https://github.com/googleapis/python-aiplatform/compare/v1.99.0...v1.100.0) (2025-06-24)
+
+
+### Features
+
+* Add invoke_route_prefix to ModelContainerSpec in aiplatform v1beta1 models.proto ([d4ede02](https://github.com/googleapis/python-aiplatform/commit/d4ede02ea6cd01cdc40b15d1eda8ba64e0eafae1))
+* Add Model Garden deploy OSS model API ([d4ede02](https://github.com/googleapis/python-aiplatform/commit/d4ede02ea6cd01cdc40b15d1eda8ba64e0eafae1))
+* Add PSCAutomationConfig to PrivateServiceConnectConfig in service_networking.proto ([d4ede02](https://github.com/googleapis/python-aiplatform/commit/d4ede02ea6cd01cdc40b15d1eda8ba64e0eafae1))
+* GenAI SDK client (evals) - add support for third-party model inference via litellm library ([e728d8b](https://github.com/googleapis/python-aiplatform/commit/e728d8bab26a97695ac2e83370543010091dbad3))
+* Reasoning Engine v1beta1 subresource updates ([d4ede02](https://github.com/googleapis/python-aiplatform/commit/d4ede02ea6cd01cdc40b15d1eda8ba64e0eafae1))
+
 ## [1.99.0](https://github.com/googleapis/python-aiplatform/compare/v1.98.0...v1.99.0) (2025-06-24)
 
 
